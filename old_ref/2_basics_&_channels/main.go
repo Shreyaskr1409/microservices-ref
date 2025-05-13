@@ -40,6 +40,9 @@ func main() {
 	// Unless someone specifier a new ServeMux, DefaultServeMux is
 	// used to Serve (Serve here is a function in http).
 	go func() {
+		// http.ErrServerClosed will be thrown when server is shutdown
+		// will add to l.Fatal(err) if not handled
+		// we will handle it separately instead at the end
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Fatal(err)
