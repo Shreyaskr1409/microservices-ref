@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Shreyaskr/microservices-ref/handlers"
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -30,6 +31,21 @@ func main() {
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProduct)
 	putRouter.Use(ph.MiddlewareProductValidation)
+
+    // GO-SWAGGER tooling acts completely broken as of right now
+    // I would rather use other alternatives
+
+    // // Redoc generates documentations using swagger o/p files
+    // // RedocOpts will take file from url "/swagger.yaml" which is
+    // // a route (not the file itself)
+    // options := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+    // sh := middleware.Redoc(options, nil)
+    // getRouter.Handle("/docs", sh)
+    // // if we GET /docs, we will get 404 error regarding Redoc get a
+    // // 404 error for the route /swagger.yaml
+    // // to settle this, we need to serve our file: swagger.yaml at
+    // // the route: /swagger.yaml
+    // getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	s := &http.Server{
 		Addr:         ":9090",
